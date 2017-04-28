@@ -10,6 +10,10 @@ The code is build with Gradle. gradle wrapper properties file to start a build w
 
 To test persistence layer I use Fongo library : https://github.com/fakemongo/fongo
 
+## CI Build
+[![Build Status](https://travis-ci.org/mabrod/hibernate-ogm-mongodb.svg?branch=master)](https://travis-ci.org/mabrod/hibernate-ogm-mongodb)
+I use Travis CI to run CI build pipeline: https://travis-ci.org/
+
 ## License
 
 The code is free to use and modify.
