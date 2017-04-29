@@ -13,6 +13,7 @@ buildscript {
 		el_api = '3.0.1-b04'
 		glassfish_el = '3.0.1-b08'
 		gradleVersion = '3.5'
+		togglez = '2.4.1.Final'
 	}
 	repositories {
 		mavenCentral()
@@ -50,6 +51,7 @@ allprojects {
 
 	dependencies {
 		compile('org.springframework.boot:spring-boot-starter')
+		compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 		compile("org.apache.logging.log4j:log4j-core:${log4j2}")
 		compile("org.apache.logging.log4j:log4j-api:${log4j2}")
 		compile("org.apache.logging.log4j:log4j-slf4j-impl:${log4j2}")
@@ -65,6 +67,7 @@ allprojects {
 		compile("org.mongodb:mongo-java-driver:${mongoDriver}")
 		compile("javax.el:javax.el-api:${el_api}")
 		compile("org.glassfish:javax.el:${glassfish_el}")
+		compile("org.togglz:togglz-spring-boot-starter:${togglez}")
 		testCompile('org.springframework.boot:spring-boot-starter-test')
 		testCompile("org.assertj:assertj-core:${assertJ}")
 		testCompile("com.github.fakemongo:fongo:${fongo}")

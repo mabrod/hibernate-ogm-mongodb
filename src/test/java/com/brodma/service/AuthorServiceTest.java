@@ -30,20 +30,12 @@ public class AuthorServiceTest {
 
     @Before
     public void setUp() {
-        Author author1 = new Author();
-        author1.setFirstName("John");
-        author1.setLastName("Doe");
-        author1.setAge(35);
-        author1.setDob(Date.valueOf("1989-02-05"));
-
-        Author author2 = new Author();
-        author2.setFirstName("Ada");
-        author2.setLastName("Lovelace");
-        author2.setAge(37);
-        author2.setDob(Date.valueOf("1815-12-10"));
-
-        authorService.add(author1);
-        authorService.add(author2);
+        Author author = new Author();
+        author.setFirstName("Ada");
+        author.setLastName("Lovelace");
+        author.setAge(37);
+        author.setDob(Date.valueOf("1815-12-10"));
+        authorService.add(author);
     }
 
     @Test

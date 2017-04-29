@@ -1,6 +1,5 @@
 package com.brodma;
 
-import com.brodma.service.LogSearchService;
 import com.brodma.util.AuthorScenarios;
 import com.brodma.util.ExecuteStrategy;
 import com.brodma.util.ReviewScenarios;
@@ -13,17 +12,16 @@ import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @SpringBootApplication
-public class Runner implements ApplicationRunner {
+public class Runner {
 
-	Map<String, ExecuteStrategy> scenarios = new HashMap<String,ExecuteStrategy>();
+	private final List<ExecuteStrategy> scenarios = new ArrayList();
 
 	@Autowired
 	private AuthorScenarios authorScenarios;
@@ -33,9 +31,6 @@ public class Runner implements ApplicationRunner {
 
 	@Autowired
 	private SearchScenarios searchScenarios;
-
-	@Autowired
-	private LogSearchService logSearchService;
 
 	@Autowired
 	private Logger logger;
@@ -53,21 +48,18 @@ public class Runner implements ApplicationRunner {
 		return LogManager.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
 	}
 
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
-           logSearchService.initSearchIndex();
-		   List<String> choices = args.getNonOptionArgs();
-		   logger.info("Started application with args {} ", choices);
-           for(String each:choices) {
-			   scenarios.get(each).execute();
-		   }
-		   logger.info("Bye.");
-	}
+	@Bean
+	@Profile("!test")
+	ApplicationRunner runApplication() {
+		return args -> {
 
-	@PostConstruct
-	public void initScenarios() {
-		scenarios.put("author", authorScenarios);
-		scenarios.put("review", reviewScenarios);
-		scenarios.put("search", searchScenarios);
+			scenarios.add(authorScenarios);
+			scenarios.add(reviewScenarios);
+			scenarios.add(searchScenarios);
+
+			for(ExecuteStrategy each:scenarios) {
+				each.execute();
+			}
+		};
 	}
 }

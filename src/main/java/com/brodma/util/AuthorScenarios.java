@@ -3,6 +3,7 @@ package com.brodma.util;
 import com.brodma.domain.Author;
 import com.brodma.service.AuthorDetailsService;
 import com.brodma.service.AuthorService;
+import com.brodma.util.featureflag.FeatureFlags;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,9 +24,10 @@ public class AuthorScenarios implements ExecuteStrategy {
 
     @Override
     public void execute() {
-
-        logger.info("Executing Author scenarios...");
-        Collection<Author> allAuthors = authorService.findAll();
-        allAuthors.stream().forEach(logger::info);
+        if (FeatureFlags.AUTHOR_SCENARIOS.isActive()) {
+            logger.info("Executing Author scenarios...");
+            Collection<Author> allAuthors = authorService.findAll();
+            allAuthors.stream().forEach(logger::info);
+        }
     }
 }
