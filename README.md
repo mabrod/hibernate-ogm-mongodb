@@ -9,8 +9,9 @@ The code samples show how to set up and run backend services based on Hibernate 
 ## Installation
 
 The code is build with Gradle. Wrapper properties file to start a build with specific Gradle version is provided.
-You need to have Mongo DB: https://www.mongodb.com installed and running. Database name and collections are all configurable. By default it starts
-with database name as "books" found in application-<profile>.properties and few collections: publishing.public.authors, publishing.public.authorDetails, publishing.books.review etc.
+You need to have Mongo DB: https://www.mongodb.com installed and running. Database name and collections are all configurable.
+By default it starts with database named as "books" found in application-profile.properties under hibernate.ogm.mongodb.database property
+Collections are defined using Table persistence annotation e.g in Author entity with following values publishing.public.authors.
 Look up each entity class in domain package to see definitions for each collections.
 
 ## Usage
