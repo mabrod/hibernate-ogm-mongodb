@@ -1,7 +1,6 @@
 package com.brodma.dao;
 
 import com.brodma.domain.LogEntry;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -17,7 +16,8 @@ import java.util.Collection;
 @Repository
 public class LogSearchImpl implements LogSearchRepo {
 
-    private final Logger LOG = LogManager.getLogger(LogSearchImpl.class);
+    @Autowired
+    private Logger logger;
 
     @Autowired
     @PersistenceContext(unitName="ogm-mongodb")
@@ -58,7 +58,7 @@ public class LogSearchImpl implements LogSearchRepo {
                     .startAndWait();
 
         } catch (InterruptedException e) {
-            LOG.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 }

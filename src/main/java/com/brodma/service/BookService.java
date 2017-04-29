@@ -2,8 +2,8 @@ package com.brodma.service;
 
 import com.brodma.dao.BookRepo;
 import com.brodma.domain.Book;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ValidationException;
@@ -13,7 +13,8 @@ import java.util.*;
 @Transactional
 public class BookService {
 
-    private final Logger LOG = LogManager.getLogger(BookService.class);
+    @Autowired
+    private Logger logger;
 
     private BookRepo bookRepo;
 
@@ -26,7 +27,7 @@ public class BookService {
         try {
             bookRepo.add(book);
         }catch(ValidationException ve) {
-            LOG.error(ve.getMessage(), ve);
+            logger.error(ve.getMessage(), ve);
         }
     }
 
@@ -35,7 +36,7 @@ public class BookService {
         try {
             bookRepo.update(book);
         }catch(ValidationException ve) {
-            LOG.error(ve.getMessage(), ve);
+            logger.error(ve.getMessage(), ve);
         }
     }
 
@@ -44,7 +45,7 @@ public class BookService {
         try {
             bookRepo.delete(book);
         }catch(ValidationException ve) {
-            LOG.error(ve.getMessage(), ve);
+            logger.error(ve.getMessage(), ve);
         }
     }
 

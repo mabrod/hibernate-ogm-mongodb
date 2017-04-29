@@ -2,7 +2,6 @@ package com.brodma.service;
 
 import com.brodma.dao.AuthorRepo;
 import com.brodma.domain.Author;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,8 @@ import java.util.*;
 @Transactional
 public class AuthorService {
 
-    private final Logger LOG = LogManager.getLogger(AuthorService.class);
+    @Autowired
+    private Logger logger;
 
     @Autowired
     private AuthorRepo authorRepo;
@@ -29,7 +29,7 @@ public class AuthorService {
         try {
             authorRepo.add(author);
         }catch(ValidationException cve) {
-            LOG.error(cve.getMessage(), cve);
+            logger.error(cve.getMessage(), cve);
         }
     }
 
@@ -39,7 +39,7 @@ public class AuthorService {
         try {
             authorRepo.update(author);
         }catch(ValidationException cve) {
-            LOG.error(cve.getMessage(), cve);
+            logger.error(cve.getMessage(), cve);
         }
     }
 

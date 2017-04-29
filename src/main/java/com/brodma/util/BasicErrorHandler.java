@@ -1,6 +1,5 @@
 package com.brodma.util;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.ogm.compensation.BaseErrorHandler;
 import org.hibernate.ogm.compensation.ErrorHandlingStrategy;
@@ -12,10 +11,14 @@ import org.hibernate.ogm.dialect.spi.TupleAlreadyExistsException;
 import org.hibernate.ogm.model.key.spi.EntityKey;
 import org.hibernate.ogm.model.key.spi.EntityKeyMetadata;
 import org.hibernate.ogm.model.spi.Tuple;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BasicErrorHandler extends BaseErrorHandler {
 
-    private static final Logger LOG = LogManager.getLogger(BasicErrorHandler.class);
+    @Autowired
+    private Logger logger;
 
     @Override
     public void onRollback(RollbackContext context) {
@@ -23,18 +26,18 @@ public class BasicErrorHandler extends BaseErrorHandler {
             switch (appliedOperation.getType()) {
                 case INSERT_TUPLE:
                     Tuple insertTuple = appliedOperation.as(InsertTuple.class).getTuple();
-                    LOG.info("Error inserting tuple {} ", insertTuple);
+                    logger.info("Error inserting tuple {} ", insertTuple);
                     break;
                 case REMOVE_TUPLE:
                     EntityKey entityKey = appliedOperation.as(RemoveTuple.class ).getEntityKey();
-                    LOG.info("Error removing entity key {} ", entityKey);
+                    logger.info("Error removing entity key {} ", entityKey);
                     break;
                 case CREATE_TUPLE:
                     EntityKeyMetadata entityKeyMetadata = appliedOperation.as(CreateTuple.class).getEntityKeyMetadata();
-                    LOG.info("Error creating tuple {} ", entityKeyMetadata);
+                    logger.info("Error creating tuple {} ", entityKeyMetadata);
                     break;
                 default:
-                    LOG.info("Default case. Not handled.");
+                    logger.info("Default case. Not handled.");
                     break;
             }
         }
@@ -44,7 +47,7 @@ public class BasicErrorHandler extends BaseErrorHandler {
     public ErrorHandlingStrategy onFailedGridDialectOperation(FailedGridDialectOperationContext context) {
         if ( context.getException() instanceof TupleAlreadyExistsException) {
             GridDialectOperation failedOperation = context.getFailedOperation();
-            LOG.info("Failed operation {} ", failedOperation);
+            logger.info("Failed operation {} ", failedOperation);
             return ErrorHandlingStrategy.CONTINUE;
         }
         else {
